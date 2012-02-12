@@ -69,7 +69,7 @@ your browser to find your DomainID.
 
 EOF
 
-if [ ! -v "${LINODE_API_KEY}" ]; then
+if [ ! -n "${LINODE_API_KEY}" ]; then
 	/bin/echo -n "Enter API key: "
 	read API_KEY
 	/bin/echo
