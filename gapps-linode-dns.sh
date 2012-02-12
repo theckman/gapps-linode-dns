@@ -44,17 +44,30 @@ GAPPS_SPF="v=spf1%20include:_spf.google.com%20~all"
 
 ARRLEN=`expr ${#MX_RECORDS[@]} - 1`
 
-/bin/echo "####################"
-/bin/echo "#  Google Apps MX  #"
-/bin/echo "# Records Creation #"
-/bin/echo "#      Script      #"
-/bin/echo "####################"
-/bin/echo
+if hash curl 2>&-; then
+    CMD="curl"
+else
+    if hash wget 2>&-; then
+        CMD="wget -qO-"
+    else
+        /bin/echo "Sorry, this script requires you to have curl or wget to continue!"
+        exit 1
+    fi
+fi
 
-/bin/echo "This script requires you to enter your API key as well as provide the DomainID."
-/bin/echo "If you are unsure of the DomainID this script will provide a URL you can view in"
-/bin/echo "your browser to find your DomainID."
-/bin/echo
+/bin/cat <<EOF
+####################
+#  Google Apps MX  #
+# Records Creation #
+#      Script      #
+####################
+
+
+This script requires you to enter your API key as well as provide the DomainID.
+If you are unsure of the DomainID this script will provide a URL you can view in
+your browser to find your DomainID.
+
+EOF
 
 /bin/echo -n "Enter API key: "
 read API_KEY
@@ -66,7 +79,7 @@ read KNOW_ID
 
 if [ "$KNOW_ID" != "y" -a "$KNOW_ID" != "Y" ]; then
 	/bin/echo "Please visit the following URL in your web browser to obtain your DomainID:"
-	/bin/echo "- https://api.linode.com/?api_key=$API_KEY&api_responseformat=human&api_action=domain.list"
+	/bin/echo "- https://api.linode.com/?api_key=${API_KEY}&api_responseformat=human&api_action=domain.list"
 	/bin/echo
 fi
 
@@ -83,13 +96,13 @@ read ADD_SPF
 for ((i=0; i <= ARRLEN; i++))
 do
 	API_URL="https://api.linode.com/\
-?api_key=$API_KEY\
+?api_key=${API_KEY}\
 &api_action=domain.resource.create\
-&domainid=$DOMAIN_ID\
+&domainid=${DOMAIN_ID}\
 &type=MX\
 &target=${MX_RECORDS[i]}\
 &priority=${MX_PRIORITY[i]}"
-		curl "$API_URL"
+		$CMD "${API_URL}"
 		/bin/echo
 done
 
@@ -98,12 +111,12 @@ if [ "$ADD_SPF" == "y" -o "$ADD_SPF" == "Y" ]; then
 	/bin/echo "Creating SPF record..."
 	/bin/echo
 	API_URL="https://api.linode.com/\
-?api_key=$API_KEY\
+?api_key=${API_KEY}\
 &api_action=domain.resource.create\
-&domainid=$DOMAIN_ID\
+&domainid=${DOMAIN_ID}\
 &type=TXT\
 &target=${GAPPS_SPF}"
-	curl "$API_URL"
+	$CMD "${API_URL}"
 	/bin/echo
 fi
 
