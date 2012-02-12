@@ -8,7 +8,21 @@ This script aids in the creation of the MX records needed for Google Apps.  This
 * Your API key can be obtained from the "My Profile" link at the top right of the Linode Manager
 * If you do not know your DomainID the script will provide you with a URL to help you obtain it.
 
-Here is the script in action:
+#Using The Script
+
+First you'll need to download the script so that you can run it:
+
+    wget "https://raw.github.com/theckman/gapps-linode-dns/master/gapps-linode-dns.sh"
+
+or
+
+    curl -O "https://raw.github.com/theckman/gapps-linode-dns/master/gapps-linode-dns.sh"
+
+Make the script executable:
+
+    chmod +x gapps-linode-dns.sh
+
+Then run the script:
 
     theckman@tron:~# ./gapps-linode-dns.sh
     ####################
