@@ -51,6 +51,7 @@ else
         CMD="wget -qO-"
     else
         /bin/echo "Sorry, this script requires you to have curl or wget to continue!"
+        exit 1
     fi
 fi
 
