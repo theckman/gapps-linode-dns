@@ -33,7 +33,6 @@ MX_RECORDS=(
 	"ASPMX2.GOOGLEMAIL.COM"
 	"ASPMX3.GOOGLEMAIL.COM"
 )
-
 MX_PRIORITY=(
 	"10"
 	"20"
@@ -41,6 +40,7 @@ MX_PRIORITY=(
 	"30"
 	"30"
 )
+GAPPS_SPF="v=spf1%20include:_spf.google.com%20~all"
 
 ARRLEN=`expr ${#MX_RECORDS[@]} - 1`
 
@@ -64,7 +64,7 @@ read API_KEY
 read KNOW_ID
 /bin/echo
 
-if [ "$KNOW_ID" == "n" -o "$KNOW_ID" == "N" ]; then
+if [ "$KNOW_ID" != "y" -a "$KNOW_ID" != "Y" ]; then
 	/bin/echo "Please visit the following URL in your web browser to obtain your DomainID:"
 	/bin/echo "- https://api.linode.com/?api_key=$API_KEY&api_responseformat=human&api_action=domain.list"
 	/bin/echo
@@ -74,6 +74,12 @@ fi
 read DOMAIN_ID
 /bin/echo
 
+/bin/echo -n "Would you like to add a default SPF record for Google Apps [y/n]: "
+read ADD_SPF
+/bin/echo
+
+/bin/echo "Creating MX records..."
+/bin/echo
 for ((i=0; i <= ARRLEN; i++))
 do
 	API_URL="https://api.linode.com/\
@@ -86,6 +92,20 @@ do
 		curl "$API_URL"
 		/bin/echo
 done
+
+if [ "$ADD_SPF" == "y" -o "$ADD_SPF" == "Y" ]; then
+	/bin/echo
+	/bin/echo "Creating SPF record..."
+	/bin/echo
+	API_URL="https://api.linode.com/\
+?api_key=$API_KEY\
+&api_action=domain.resource.create\
+&domainid=$DOMAIN_ID\
+&type=TXT\
+&target=${GAPPS_SPF}"
+	curl "$API_URL"
+	/bin/echo
+fi
 
 /bin/echo
 /bin/echo "Should be finished at this point (assuming no errors were generated from API calls)!"

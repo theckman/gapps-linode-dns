@@ -3,7 +3,7 @@
 
 **License:** This script was released under the [MIT license](http://www.opensource.org/licenses/mit-license.php).
 
-This script aids in the creation of the MX records needed for Google Apps.  This script uses the [Linode](http://www.linode.com/?r=78a747e2c08ffb6618e260c3c62f536687b9159c) [API](http://www.linode.com/api) to create the records.  So be sure to have your API key and DomainID handy.
+This script aids in the creation of the MX records needed for Google Apps.  You can optionally add the recommended default SPF record as well.  This script uses the [Linode](http://www.linode.com/?r=78a747e2c08ffb6618e260c3c62f536687b9159c) [API](http://www.linode.com/api) to create the records.  So be sure to have your API key and DomainID handy.
 
 * Your API key can be obtained from the "My Profile" link at the top right of the Linode Manager
 * If you do not know your DomainID the script will provide you with a URL to help you obtain it.
@@ -36,21 +36,28 @@ Then run the script:
     your browser to find your DomainID.
 
 	Enter API key: [redacted]
-	
+
 	Do you know your DomainID [y/n]: n
-	
+
 	Please visit the following URL in your web browser to obtain your DomainID:
 	- https://api.linode.com/?api_key=[redacted]&api_responseformat=human&api_action=domain.list
-	
+
 	Enter your DomainID: [redacted]
 
-    {"ERRORARRAY":[],"DATA":{"ResourceID":[redacted]},"ACTION":"domain.resource.create"}
-    {"ERRORARRAY":[],"DATA":{"ResourceID":[redacted]},"ACTION":"domain.resource.create"}
-    {"ERRORARRAY":[],"DATA":{"ResourceID":[redacted]},"ACTION":"domain.resource.create"}
-    {"ERRORARRAY":[],"DATA":{"ResourceID":[redacted]},"ACTION":"domain.resource.create"}
-    {"ERRORARRAY":[],"DATA":{"ResourceID":[redacted]},"ACTION":"domain.resource.create"}
+	Would you like to add a default SPF record for Google Apps [y/n]: y
 
-    Should be finished at this point (assuming no errors were generated from API calls)!
-    Please verify the created records within the Linode DNS Manager.
-    <3 heckman
+	Creating MX records...
 
+	{"ERRORARRAY":[],"DATA":{"ResourceID":[redacted]},"ACTION":"domain.resource.create"}
+	{"ERRORARRAY":[],"DATA":{"ResourceID":[redacted]},"ACTION":"domain.resource.create"}
+	{"ERRORARRAY":[],"DATA":{"ResourceID":[redacted]},"ACTION":"domain.resource.create"}
+	{"ERRORARRAY":[],"DATA":{"ResourceID":[redacted]},"ACTION":"domain.resource.create"}
+	{"ERRORARRAY":[],"DATA":{"ResourceID":[redacted]},"ACTION":"domain.resource.create"}
+
+	Creating SPF record...
+
+	{"ERRORARRAY":[],"DATA":{"ResourceID":[redacted]},"ACTION":"domain.resource.create"}
+
+	Should be finished at this point (assuming no errors were generated from API calls)!
+	Please verify the created records within the Linode DNS Manager.
+	<3 heckman
