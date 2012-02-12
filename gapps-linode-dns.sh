@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 ####
 # Copyright (c) 2012 Tim Heckman <timothy.heckman@gmail.com>
 #
@@ -69,9 +69,11 @@ your browser to find your DomainID.
 
 EOF
 
-/bin/echo -n "Enter API key: "
-read API_KEY
-/bin/echo
+if [ ! -n "${LINODE_API_KEY}" ]; then
+	/bin/echo -n "Enter API key: "
+	read API_KEY
+	/bin/echo
+fi
 
 /bin/echo -n "Do you know your DomainID [y/n]: "
 read KNOW_ID
