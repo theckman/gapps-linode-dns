@@ -1,11 +1,11 @@
 #Google Apps Linode DNS Script
 **Please note:** While this script was written by a Linode employee it is not endorsed nor maintained by Linode. Linode should not be contacted for support using this script or to report any bugs with the script.
 
-**License:** This script was released under the [MIT license](http://www.opensource.org/licenses/mit-license.php).
+**License:** This script is released under the [MIT license](http://www.opensource.org/licenses/mit-license.php).
 
 This script aids in the creation of the MX records needed for Google Apps.  You can optionally add the recommended default SPF record as well.  This script uses the [Linode](http://www.linode.com/?r=78a747e2c08ffb6618e260c3c62f536687b9159c) [API](http://www.linode.com/api) to create the records.  So be sure to have your API key and DomainID handy.
 
-* Your API key can be obtained from the "My Profile" link at the top right of the Linode Manager
+* Your API key can be obtained from the "[My Profile](https://manager.linode.com/profile/index)" link at the top right of the Linode Manager
 * If you do not know your DomainID the script will provide you with a URL to help you obtain it.
 
 #Using The Script
