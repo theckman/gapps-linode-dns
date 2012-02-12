@@ -95,13 +95,13 @@ read ADD_SPF
 for ((i=0; i <= ARRLEN; i++))
 do
 	API_URL="https://api.linode.com/\
-?api_key=$API_KEY\
+?api_key=${API_KEY}\
 &api_action=domain.resource.create\
-&domainid=$DOMAIN_ID\
+&domainid=${DOMAIN_ID}\
 &type=MX\
 &target=${MX_RECORDS[i]}\
 &priority=${MX_PRIORITY[i]}"
-		$CMD "$API_URL"
+		$CMD "${API_URL}"
 		/bin/echo
 done
 
@@ -110,12 +110,12 @@ if [ "$ADD_SPF" == "y" -o "$ADD_SPF" == "Y" ]; then
 	/bin/echo "Creating SPF record..."
 	/bin/echo
 	API_URL="https://api.linode.com/\
-?api_key=$API_KEY\
+?api_key=${API_KEY}\
 &api_action=domain.resource.create\
-&domainid=$DOMAIN_ID\
+&domainid=${DOMAIN_ID}\
 &type=TXT\
 &target=${GAPPS_SPF}"
-	$CMD "$API_URL"
+	$CMD "${API_URL}"
 	/bin/echo
 fi
 
