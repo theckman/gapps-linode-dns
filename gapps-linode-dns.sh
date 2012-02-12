@@ -73,6 +73,8 @@ if [ ! -n "${LINODE_API_KEY}" ]; then
 	/bin/echo -n "Enter API key: "
 	read API_KEY
 	/bin/echo
+else
+	API_KEY="${LINODE_API_KEY}"
 fi
 
 /bin/echo -n "Do you know your DomainID [y/n]: "
