@@ -51,7 +51,7 @@ ARRLEN=`expr ${#MX_RECORDS[@]} - 1`
 /bin/echo "####################"
 /bin/echo
 
-/bin/echo "This script requres you to enter your API key as well as provide the DomainID."
+/bin/echo "This script requires you to enter your API key as well as provide the DomainID."
 /bin/echo "If you are unsure of the DomainID this script will provide a URL you can view in"
 /bin/echo "your browser to find your DomainID."
 /bin/echo
