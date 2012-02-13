@@ -76,10 +76,13 @@ else
 	API_KEY="${LINODE_API_KEY}"
 fi
 
-if [ -z "${DOMAIN}"  ]; then
+if [ -z "${GDOMAIN}" ]; then
 	/bin/echo -n "Enter your master domain name: "
 	read DOMAIN
 	/bin/echo
+else
+	DOMAIN="${GDOMAIN}"
+	/bin/echo "Adding entries for ${DOMAIN}"
 fi
 
 API_URL="https://api.linode.com/?api_key=${API_KEY}\
