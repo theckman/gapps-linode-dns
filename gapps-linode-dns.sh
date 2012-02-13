@@ -45,7 +45,7 @@ GAPPS_SPF="v=spf1%20include:_spf.google.com%20~all"
 ARRLEN=`expr ${#MX_RECORDS[@]} - 1`
 
 if hash curl 2>&-; then
-    CMD="curl"
+    CMD="curl -s"
 else
     if hash wget 2>&-; then
         CMD="wget -qO-"
@@ -84,9 +84,9 @@ fi
 API_URL="https://api.linode.com/?api_key=${API_KEY}\
 &api_responseformat=json\
 &api_action=domain.list"
-DOMAIN_ID=`$CMD "${API_URL}" | sed -e 's/.*"DOMAINID":\([0-9]\+\),.*"DOMAIN":"'"${DOMAIN}"'".*/\1/'`
+DOMAIN_ID=`$CMD "${API_URL}" | sed 's/.*"DOMAINID":\([0-9]\+\),.*"DOMAIN":"'"${DOMAIN}"'".*/\1/'`
 
-if echo "${DOMAIN_ID}" | grep -q , ; then
+echo "${DOMAIN_ID}" |  if [ ! -z `sed 's/[0-9]\+//'` ]; then
 	echo "Domain not found"
 	exit
 fi
