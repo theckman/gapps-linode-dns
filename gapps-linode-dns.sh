@@ -55,6 +55,10 @@ else
     fi
 fi
 
+if ! hash awk 2>&-; then
+	/bin/echo "Sorry, this script requires you to have awk to continue!"
+fi
+
 /bin/cat <<EOF
 ####################
 #  Google Apps MX  #
@@ -62,14 +66,9 @@ fi
 #      Script      #
 ####################
 
-
-This script requires you to enter your API key as well as provide the DomainID.
-If you are unsure of the DomainID this script will provide a URL you can view in
-your browser to find your DomainID.
-
 EOF
 
-if [ ! -n "${LINODE_API_KEY}" ]; then
+if [ -z "${LINODE_API_KEY}" ]; then
 	/bin/echo -n "Enter API key: "
 	read API_KEY
 	/bin/echo
@@ -77,19 +76,21 @@ else
 	API_KEY="${LINODE_API_KEY}"
 fi
 
-/bin/echo -n "Do you know your DomainID [y/n]: "
-read KNOW_ID
-/bin/echo
-
-if [ "$KNOW_ID" != "y" -a "$KNOW_ID" != "Y" ]; then
-	/bin/echo "Please visit the following URL in your web browser to obtain your DomainID:"
-	/bin/echo "- https://api.linode.com/?api_key=${API_KEY}&api_responseformat=human&api_action=domain.list"
+if [ -z "${DOMAIN}"  ]; then
+	/bin/echo -n "Enter your master domain name: "
+	read DOMAIN
 	/bin/echo
 fi
 
-/bin/echo -n "Enter your DomainID: "
-read DOMAIN_ID
-/bin/echo
+API_URL="https://api.linode.com/?api_key=${API_KEY}\
+&api_responseformat=json\
+&api_action=domain.list"
+DOMAIN_ID=`$CMD "${API_URL}" | sed -e 's/.*"DOMAINID":\([0-9]\+\),.*"DOMAIN":"'"${DOMAIN}"'".*/\1/'`
+
+if echo "${DOMAIN_ID}" | grep -q , ; then
+	/bin/echo "Domain not found"
+	exit
+fi
 
 /bin/echo -n "Would you like to add a default SPF record for Google Apps [y/n]: "
 read ADD_SPF
