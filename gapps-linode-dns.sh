@@ -55,10 +55,6 @@ else
     fi
 fi
 
-if ! hash awk 2>&-; then
-	/bin/echo "Sorry, this script requires you to have awk to continue!"
-fi
-
 /bin/cat <<EOF
 ####################
 #  Google Apps MX  #
