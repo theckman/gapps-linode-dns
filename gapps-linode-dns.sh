@@ -50,7 +50,7 @@ else
     if hash wget 2>&-; then
         CMD="wget -qO-"
     else
-        /bin/echo "Sorry, this script requires you to have curl or wget to continue!"
+        echo "Sorry, this script requires you to have curl or wget to continue!"
         exit 1
     fi
 fi
@@ -65,20 +65,20 @@ fi
 EOF
 
 if [ -z "${LINODE_API_KEY}" ]; then
-	/bin/echo -n "Enter API key: "
+	echo -n "Enter API key: "
 	read API_KEY
-	/bin/echo
+	echo
 else
 	API_KEY="${LINODE_API_KEY}"
 fi
 
 if [ -z "${GDOMAIN}" ]; then
-	/bin/echo -n "Enter your master domain name: "
+	echo -n "Enter your master domain name: "
 	read DOMAIN
-	/bin/echo
+	echo
 else
 	DOMAIN="${GDOMAIN}"
-	/bin/echo "Adding entries for ${DOMAIN}"
+	echo "Adding entries for ${DOMAIN}"
 fi
 
 API_URL="https://api.linode.com/?api_key=${API_KEY}\
@@ -87,16 +87,16 @@ API_URL="https://api.linode.com/?api_key=${API_KEY}\
 DOMAIN_ID=`$CMD "${API_URL}" | sed -e 's/.*"DOMAINID":\([0-9]\+\),.*"DOMAIN":"'"${DOMAIN}"'".*/\1/'`
 
 if echo "${DOMAIN_ID}" | grep -q , ; then
-	/bin/echo "Domain not found"
+	echo "Domain not found"
 	exit
 fi
 
-/bin/echo -n "Would you like to add a default SPF record for Google Apps [y/n]: "
+echo -n "Would you like to add a default SPF record for Google Apps [y/n]: "
 read ADD_SPF
-/bin/echo
+echo
 
-/bin/echo "Creating MX records..."
-/bin/echo
+echo "Creating MX records..."
+echo
 for ((i=0; i <= ARRLEN; i++))
 do
 	API_URL="https://api.linode.com/\
@@ -107,13 +107,13 @@ do
 &target=${MX_RECORDS[i]}\
 &priority=${MX_PRIORITY[i]}"
 		$CMD "${API_URL}"
-		/bin/echo
+		echo
 done
 
 if [ "$ADD_SPF" == "y" -o "$ADD_SPF" == "Y" ]; then
-	/bin/echo
-	/bin/echo "Creating SPF record..."
-	/bin/echo
+	echo
+	echo "Creating SPF record..."
+	echo
 	API_URL="https://api.linode.com/\
 ?api_key=${API_KEY}\
 &api_action=domain.resource.create\
@@ -121,11 +121,11 @@ if [ "$ADD_SPF" == "y" -o "$ADD_SPF" == "Y" ]; then
 &type=TXT\
 &target=${GAPPS_SPF}"
 	$CMD "${API_URL}"
-	/bin/echo
+	echo
 fi
 
-/bin/echo
-/bin/echo "Should be finished at this point (assuming no errors were generated from API calls)!"
-/bin/echo "Please verify the created records within the Linode DNS Manager."
-/bin/echo "<3 heckman"
+echo
+echo "Should be finished at this point (assuming no errors were generated from API calls)!"
+echo "Please verify the created records within the Linode DNS Manager."
+echo "<3 heckman"
 exit 0
