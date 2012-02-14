@@ -84,9 +84,9 @@ fi
 API_URL="https://api.linode.com/?api_key=${API_KEY}\
 &api_responseformat=json\
 &api_action=domain.list"
-DOMAIN_ID=`$CMD "${API_URL}" | sed 's/.*"DOMAINID":\([0-9]\+\),.*"DOMAIN":"'"${DOMAIN}"'".*/\1/'`
+DOMAIN_ID=`$CMD "${API_URL}" | sed -E 's/.*"DOMAINID":([0-9]+),.*"DOMAIN":"'"${DOMAIN}"'".*/\1/'`
 
-if [ `echo -n "${DOMAIN_ID}" |  sed 's/[0-9]\+/1/'` != "1" ]; then 
+if [ `echo -n "${DOMAIN_ID}" |  sed -E 's/[0-9]+/1/'` != "1" ]; then 
 	echo "Domain not found"
 	exit
 fi
