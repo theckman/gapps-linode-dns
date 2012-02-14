@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 ####
 # Copyright (c) 2012 Tim Heckman <timothy.heckman@gmail.com>
 #
@@ -45,12 +45,12 @@ GAPPS_SPF="v=spf1%20include:_spf.google.com%20~all"
 ARRLEN=`expr ${#MX_RECORDS[@]} - 1`
 
 if hash curl 2>&-; then
-    CMD="curl"
+    CMD="curl -s"
 else
     if hash wget 2>&-; then
         CMD="wget -qO-"
     else
-        /bin/echo "Sorry, this script requires you to have curl or wget to continue!"
+        echo "Sorry, this script requires you to have curl or wget to continue!"
         exit 1
     fi
 fi
@@ -62,41 +62,41 @@ fi
 #      Script      #
 ####################
 
-
-This script requires you to enter your API key as well as provide the DomainID.
-If you are unsure of the DomainID this script will provide a URL you can view in
-your browser to find your DomainID.
-
 EOF
 
-if [ ! -n "${LINODE_API_KEY}" ]; then
-	/bin/echo -n "Enter API key: "
+if [ -z "${LINODE_API_KEY}" ]; then
+	echo -n "Enter API key: "
 	read API_KEY
-	/bin/echo
+	echo
 else
 	API_KEY="${LINODE_API_KEY}"
 fi
 
-/bin/echo -n "Do you know your DomainID [y/n]: "
-read KNOW_ID
-/bin/echo
-
-if [ "$KNOW_ID" != "y" -a "$KNOW_ID" != "Y" ]; then
-	/bin/echo "Please visit the following URL in your web browser to obtain your DomainID:"
-	/bin/echo "- https://api.linode.com/?api_key=${API_KEY}&api_responseformat=human&api_action=domain.list"
-	/bin/echo
+if [ -z "${GDOMAIN}" ]; then
+	echo -n "Enter your master domain name: "
+	read DOMAIN
+	echo
+else
+	DOMAIN="${GDOMAIN}"
+	echo "Adding entries for ${DOMAIN}"
 fi
 
-/bin/echo -n "Enter your DomainID: "
-read DOMAIN_ID
-/bin/echo
+API_URL="https://api.linode.com/?api_key=${API_KEY}\
+&api_responseformat=json\
+&api_action=domain.list"
+DOMAIN_ID=`$CMD "${API_URL}" | sed -E 's/.*"DOMAINID":([0-9]+),.*"DOMAIN":"'"${DOMAIN}"'".*/\1/'`
 
-/bin/echo -n "Would you like to add a default SPF record for Google Apps [y/n]: "
+if [ `echo -n "${DOMAIN_ID}" |  sed -E 's/[0-9]+/1/'` != "1" ]; then 
+	echo "Domain not found"
+	exit
+fi
+
+echo -n "Would you like to add a default SPF record for Google Apps [y/n]: "
 read ADD_SPF
-/bin/echo
+echo
 
-/bin/echo "Creating MX records..."
-/bin/echo
+echo "Creating MX records..."
+echo
 for ((i=0; i <= ARRLEN; i++))
 do
 	API_URL="https://api.linode.com/\
@@ -107,13 +107,13 @@ do
 &target=${MX_RECORDS[i]}\
 &priority=${MX_PRIORITY[i]}"
 		$CMD "${API_URL}"
-		/bin/echo
+		echo
 done
 
 if [ "$ADD_SPF" == "y" -o "$ADD_SPF" == "Y" ]; then
-	/bin/echo
-	/bin/echo "Creating SPF record..."
-	/bin/echo
+	echo
+	echo "Creating SPF record..."
+	echo
 	API_URL="https://api.linode.com/\
 ?api_key=${API_KEY}\
 &api_action=domain.resource.create\
@@ -121,11 +121,11 @@ if [ "$ADD_SPF" == "y" -o "$ADD_SPF" == "Y" ]; then
 &type=TXT\
 &target=${GAPPS_SPF}"
 	$CMD "${API_URL}"
-	/bin/echo
+	echo
 fi
 
-/bin/echo
-/bin/echo "Should be finished at this point (assuming no errors were generated from API calls)!"
-/bin/echo "Please verify the created records within the Linode DNS Manager."
-/bin/echo "<3 heckman"
+echo
+echo "Should be finished at this point (assuming no errors were generated from API calls)!"
+echo "Please verify the created records within the Linode DNS Manager."
+echo "<3 heckman"
 exit 0
