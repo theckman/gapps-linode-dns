@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 ####
 # Copyright (c) 2012 Tim Heckman <timothy.heckman@gmail.com>
 #
