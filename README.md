@@ -1,5 +1,5 @@
 #Google Apps Linode DNS Script
-**Please note:** While this script was written by a Linode employee it is not endorsed nor maintained by Linode. Linode should not be contacted for support using this script or to report any bugs with the script.
+**Please note:** While this script was written by a Linode employee it is not a product of Linode nor is it maintained by Linode. Linode should not be contacted for support using this script or to report any bugs with the script.
 
 **License:** This script is released under the [MIT license](http://www.opensource.org/licenses/mit-license.php).
 
