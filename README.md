@@ -48,13 +48,13 @@ Then run the script:
 	You can also add CNAMEs to make navigating to the Google Apps web interface easier.
 	Would you like to add some Google Apps CNAMEs [y/N]: y
 
-	Would you like to add a CNAME for mail.umad-b.ro [y/N]: y
+	Would you like to add a CNAME for mail.timheckman.net [y/N]: y
 
-	Would you like to add a CNAME for calendar.umad-b.ro [y/N]: y
+	Would you like to add a CNAME for calendar.timheckman.net [y/N]: y
 
-	Would you like to add a CNAME for contacts.umad-b.ro [y/N]: y
+	Would you like to add a CNAME for contacts.timheckman.net [y/N]: y
 
-	Would you like to add a CNAME for docs.umad-b.ro [y/N]: y
+	Would you like to add a CNAME for docs.timheckman.net [y/N]: y
 
 	Creating MX records...
 
