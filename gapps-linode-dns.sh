@@ -91,7 +91,7 @@ if [ `echo -n "${DOMAIN_ID}" |  sed -E 's/[0-9]+/1/'` != "1" ]; then
 	exit
 fi
 
-echo -n "Would you like to add a default SPF record for Google Apps [y/n]: "
+echo -n "Would you like to add a default SPF record for Google Apps [y/N]: "
 read ADD_SPF
 echo
 
