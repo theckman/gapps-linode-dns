@@ -149,7 +149,7 @@ if [ "$ADD_SPF" == "y" -o "$ADD_SPF" == "Y" ]; then
 fi
 
 if [ "$ADD_CNAME" == "y" -o "$ADD_CNAME" == "Y" ]; then
-	echo 
+	echo
 	echo "Creating CNAMEs..."
 	echo
 	for ((i=0; i <= CNAME_LEN; i++ ))
