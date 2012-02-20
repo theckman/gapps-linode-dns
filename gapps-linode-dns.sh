@@ -91,9 +91,32 @@ if [ `echo -n "${DOMAIN_ID}" |  sed -E 's/[0-9]+/1/'` != "1" ]; then
 	exit
 fi
 
-echo -n "Would you like to add a default SPF record for Google Apps [y/N]: "
+echo -n "Would you like to add the recommended default SPF record for Google Apps [y/N]: "
 read ADD_SPF
 echo
+
+echo "You can also add CNAMEs to make navigating to the Google Apps web interface easier."
+echo -n "Would you like to add some Google Apps CNAMEs [y/N]: "
+read ADD_CNAME
+echo
+
+if [ "$ADD_CNAME" == "y" -o "$ADD_CNAME" == "Y" ]; then
+	CNAME_LIST=(
+		"mail"
+		"calendar"
+		"contacts"
+		"docs"
+	)
+	CNAME_LEN=$((${#CNAME_LIST[*]} - 1))
+	CNAME_ADD=()
+	for ((i=0; i <= CNAME_LEN; i++ ))
+	do
+		echo -n "Would you like to add a CNAME for ${CNAME_LIST[i]}.${DOMAIN} [y/N]: "
+		read DO_CNAME
+		echo
+		CNAME_ADD[$i]=${DO_CNAME}
+	done
+fi
 
 echo "Creating MX records..."
 echo
@@ -106,6 +129,7 @@ do
 &type=MX\
 &target=${MX_RECORDS[i]}\
 &priority=${MX_PRIORITY[i]}"
+		echo "${MX_RECORDS[i]}:"
 		$CMD "${API_URL}"
 		echo
 done
@@ -124,8 +148,33 @@ if [ "$ADD_SPF" == "y" -o "$ADD_SPF" == "Y" ]; then
 	echo
 fi
 
-echo
-echo "Should be finished at this point (assuming no errors were generated from API calls)!"
-echo "Please verify the created records within the Linode DNS Manager."
+if [ "$ADD_CNAME" == "y" -o "$ADD_CNAME" == "Y" ]; then
+	echo 
+	echo "Creating CNAMEs..."
+	echo
+	for ((i=0; i <= CNAME_LEN; i++ ))
+	do
+		if [ "${CNAME_ADD[i]}" == "y" -o "${CNAME_ADD[i]}" == "Y" ]; then
+			API_URL="https://api.linode.com/\
+?api_key=${API_KEY}\
+&api_action=domain.resource.create\
+&domainid=${DOMAIN_ID}\
+&type=CNAME\
+&name=${CNAME_LIST[i]}\
+&target=ghs.google.com"
+			echo "${CNAME_LIST[i]}:"
+			$CMD "${API_URL}"
+			echo
+		fi
+	done
+	echo
+	echo "You'll need to update the URLs for your Google Apps Core Services to the CNAMEs"
+	echo "that you just created: https://www.google.com/a/${DOMAIN}"
+	echo
+fi
+
+echo "Everything should be finished at this point (assuming no errors were returned via API)!"
+echo "Please verify the created records within the Linode DNS Manager:"
+echo "https://manager.linode.com/dns/domain/${DOMAIN}"
 echo "<3 heckman"
 exit 0
