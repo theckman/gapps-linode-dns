@@ -43,20 +43,51 @@ Then run the script:
 
 	Enter your master domain name: timheckman.net
 
-	Would you like to add a default SPF record for Google Apps [y/n]: y
+	Would you like to add the recommended default SPF record for Google Apps [y/N]: y
+
+	You can also add CNAMEs to make navigating to the Google Apps web interface easier.
+	Would you like to add some Google Apps CNAMEs [y/N]: y
+
+	Would you like to add a CNAME for mail.umad-b.ro [y/N]: y
+
+	Would you like to add a CNAME for calendar.umad-b.ro [y/N]: y
+
+	Would you like to add a CNAME for contacts.umad-b.ro [y/N]: y
+
+	Would you like to add a CNAME for docs.umad-b.ro [y/N]: y
 
 	Creating MX records...
 
+	ASPMX.L.GOOGLE.COM:
 	{"ERRORARRAY":[],"DATA":{"ResourceID":[redacted]},"ACTION":"domain.resource.create"}
+	ALT1.ASPMX.L.GOOGLE.COM:
 	{"ERRORARRAY":[],"DATA":{"ResourceID":[redacted]},"ACTION":"domain.resource.create"}
+	ALT2.ASPMX.L.GOOGLE.COM:
 	{"ERRORARRAY":[],"DATA":{"ResourceID":[redacted]},"ACTION":"domain.resource.create"}
+	ASPMX2.GOOGLEMAIL.COM:
 	{"ERRORARRAY":[],"DATA":{"ResourceID":[redacted]},"ACTION":"domain.resource.create"}
+	ASPMX3.GOOGLEMAIL.COM:
 	{"ERRORARRAY":[],"DATA":{"ResourceID":[redacted]},"ACTION":"domain.resource.create"}
 
 	Creating SPF record...
 
 	{"ERRORARRAY":[],"DATA":{"ResourceID":[redacted]},"ACTION":"domain.resource.create"}
 
-	Should be finished at this point (assuming no errors were generated from API calls)!
-	Please verify the created records within the Linode DNS Manager.
+	Creating CNAMEs...
+
+	mail:
+	{"ERRORARRAY":[],"DATA":{"ResourceID":[redacted]},"ACTION":"domain.resource.create"}
+	calendar:
+	{"ERRORARRAY":[],"DATA":{"ResourceID":[redacted]},"ACTION":"domain.resource.create"}
+	contacts:
+	{"ERRORARRAY":[],"DATA":{"ResourceID":[redacted]},"ACTION":"domain.resource.create"}
+	docs:
+	{"ERRORARRAY":[],"DATA":{"ResourceID":[redacted]},"ACTION":"domain.resource.create"}
+
+	You'll need to update the URLs for your Google Apps Core Services to the CNAMEs
+	that you just created: https://www.google.com/a/timheckman.net
+
+	Everything should be finished at this point (assuming no errors were returned via API)!
+	Please verify the created records within the Linode DNS Manager:
+	https://manager.linode.com/dns/domain/timheckman.net
 	<3 heckman
