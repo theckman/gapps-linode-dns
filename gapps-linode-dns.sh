@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 ####
-# Copyright (c) 2012 Tim Heckman <timothy.heckman@gmail.com>
+# Copyright (c) 2012 Tim Heckman <timothy.heckman@gmail.com> and contributors
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this
 # software and associated documentation files (the "Software"), to deal in the Software
